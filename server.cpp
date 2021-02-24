@@ -76,7 +76,9 @@ string Server::formResponse()
     stream << "Content-type: text/html\r\n";
     stream << "Access-Control-Allow-Origin: *\r\n";
     stream << "Connection: close\r\n";
-    stream << "\r\n"; 
+    stream << "\r\n";
+
+    std::cout << "debug" << std::endl;
 
     std::ifstream inputFile("index.html");
 
