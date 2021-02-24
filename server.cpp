@@ -73,6 +73,13 @@ string Server::formResponse()
     {
     std::ostringstream stream;
     stream << "HTTP/1.1 200 OK\r\n";
+    stream << "Content-type: text/html\r\n";
+    stream << "Access-Control-Allow-Origin: *\r\n";
+    stream << "Connection: close\r\n";
     stream << "\r\n"; 
+
+    std::ifstream inputFile("index.html");
+
+    stream << inputFile.rdbuf();
     return stream.str();
     } // end formRequest()

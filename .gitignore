@@ -3,3 +3,6 @@
 
 # Test binaries
 tests/bin/*
+
+#vscode shtuff
+.vscode
