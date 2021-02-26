@@ -78,8 +78,6 @@ string Server::formResponse()
     stream << "Connection: close\r\n";
     stream << "\r\n";
 
-    std::cout << "debug" << std::endl;
-
     std::ifstream inputFile("index.html");
 
     stream << inputFile.rdbuf();
