@@ -20,7 +20,7 @@
                         link.setAttribute("href", element.url);
 
                         link.text = element.url
-                        desc.innerHTML = element.snippet;
+                        desc.innerHTML = element.snippet + " " + element.rank.toFixed(4);
                         
                         listItem.appendChild(link);
                         listItem.appendChild(desc);
