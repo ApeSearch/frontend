@@ -1,31 +1,39 @@
 <html>
     <script>
-        function query() {
+        function query(imFeelingLucky) {
             let query = document.getElementById("search").value;
-            document.getElementById("results").innerHTML = "";
 
             fetch(`http://localhost:42069/q=${query}`).then(response => response.json())
                 .then(data => {
                     console.log(data);
-                    let ul = document.createElement('ul');
-                    document.getElementById("results").appendChild(ul);
+                    if (imFeelingLucky) {
+                        window.location.href = data[0].url;
+                    } 
+                    else {
+                        document.getElementById("results").innerHTML = "";
 
-                    data.forEach(element => {
-                        let listItem = document.createElement("li");
-                        ul.appendChild(listItem);
-
-                        let link = document.createElement("a");
-                        let desc = document.createElement("p");
-
-                        link.setAttribute("href", element.url);
-
-                        link.text = element.url
-                        desc.innerHTML = element.snippet + " " + element.rank.toFixed(4);
+                        let ul = document.createElement('ul');
+                        document.getElementById("results").appendChild(ul);
                         
-                        listItem.appendChild(link);
-                        listItem.appendChild(desc);
-                    })
-                })
+                        // Append returned to results list
+                        data.forEach(element => {
+                            let listItem = document.createElement("li");
+                            ul.appendChild(listItem);
+
+                            let link = document.createElement("a");
+                            let desc = document.createElement("p");
+
+                            link.setAttribute("href", element.url);
+                            link.text = element.url
+                            desc.innerHTML = element.snippet + " " + element.rank.toFixed(4);
+                            
+                            listItem.appendChild(link);
+                            listItem.appendChild(desc);
+                        })
+                    }
+                }).catch((err) => {
+                    console.log(`Error querying backend: ${err}`);
+                });
         }
     </script>
     <head>
@@ -37,8 +45,8 @@
             <input id="search">
         </div>
         <div>
-            <button onclick="query()">Search</button>
-            <button>I'm feeling lucky</button>
+            <button onclick="query(false)">Search</button>
+            <button onclick="query(true)">I'm feeling lucky</button>
         </div>
         <div id="results"></div>
     </body>
