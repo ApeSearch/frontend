@@ -2,7 +2,6 @@
     <script>
         function query(imFeelingLucky) {
             let query = document.getElementById("search").value;
-
             fetch(`http://localhost:42069/q=${query}`).then(response => response.json())
                 .then(data => {
                     console.log(data);
@@ -29,11 +28,17 @@
                             
                             listItem.appendChild(link);
                             listItem.appendChild(desc);
+
+                            document.getElementById("results").style.visibility = "visible";
+                            //make button visible on search
                         })
                     }
                 }).catch((err) => {
                     console.log(`Error querying backend: ${err}`);
                 });
+        }
+        function moreResults(){
+
         }
     </script>
     <head>
@@ -46,8 +51,10 @@
         </div>
         <div>
             <button onclick="query(false)">Search</button>
-            <button onclick="query(true)">I'm feeling lucky</button>
+            <button onclick="query(true)">I'm Feeling Lucky</button>
         </div>
-        <div id="results"></div>
+        <div id="results" style="visibility: hidden;">
+            <button onclick="moreResults()" >More Results</button>
+        </div>
     </body>
 </html>
