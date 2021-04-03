@@ -1,8 +1,13 @@
 <html>
     
     <script>
+        let previousQuery = "";
+
         function query(imFeelingLucky) {
             let query = document.getElementById("search").value;
+            if (query === "" || (query === previousQuery) ) {
+                return;
+            }
             fetch(`http://localhost:42069/q=${query}`).then(response => response.json())
                 .then(data => {
                     console.log(data);
@@ -32,6 +37,8 @@
 
                             document.getElementById("results").style.visibility = "visible";
                             //make button visible on search
+
+                            previousQuery = query;
                         })
                     }
                 }).catch((err) => {
