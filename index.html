@@ -1,53 +1,51 @@
 <html>
-    
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script>
         let previousQuery = "";
 
         function query(imFeelingLucky) {
-            let query = document.getElementById("search").value;
+            let query = $('#search').val();
             if (query === "" || (query === previousQuery) ) {
                 return;
             }
-            fetch(`http://localhost:42069/q=${query}`).then(response => response.json())
+            fetch(`http://${window.location.hostname}:42069/q=${query}`).then(response => response.json())
                 .then(data => {
                     console.log(data);
                     if (imFeelingLucky) {
                         window.location.href = data[0].url;
                     } 
                     else {
-                        document.getElementById("results").innerHTML = "";
-
-                        let ul = document.createElement('ul');
-                        document.getElementById("results").appendChild(ul);
-                        
-                        // Append returned to results list
+                        $("#results").html($(`<ul id="resultsList"></ul>`));
                         data.forEach(element => {
-                            let listItem = document.createElement("li");
-                            ul.appendChild(listItem);
+                            $("#resultsList").append($(
+                                `<li>
+                                    <a href="${element.url}">${element.url}</a>
+                                    <p>${element.snippet} ${element.rank.toFixed(4)}<p>
+                                </li>`)
+                            );
+                        });
 
-                            let link = document.createElement("a");
-                            let desc = document.createElement("p");
-
-                            link.setAttribute("href", element.url);
-                            link.text = element.url
-                            desc.innerHTML = element.snippet + " " + element.rank.toFixed(4);
-                            
-                            listItem.appendChild(link);
-                            listItem.appendChild(desc);
-
-                            document.getElementById("results").style.visibility = "visible";
-                            //make button visible on search
-
-                            previousQuery = query;
-                        })
+                        //make button visible on search
+                        previousQuery = query;
+                        $("#results").css("visibility", "visible");
                     }
                 }).catch((err) => {
                     console.log(`Error querying backend: ${err}`);
                 });
         }
+
         function moreResults(){
 
         }
+        
+        // 'Enter' keypress handler for the searchbox
+        $(document).ready(function() {
+            $('#search').on('keypress', function(e) {
+                if (e.which == 13) {
+                    query(false);
+                }
+            });
+        });
     </script>
 
     <head>
